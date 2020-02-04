@@ -14,7 +14,7 @@ server {
 
         location / {
             allow 127.0.0.1;
-            alias  /home/ubuntu/static/;
+            alias  /home/ubuntu/static/static/;
             index index.html;
             try_files $uri $uri/ /index.html;
         }
