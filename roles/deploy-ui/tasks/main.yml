@@ -1,0 +1,25 @@
+---
+
+
+- name: stat folder
+  stat: path="{{ ui_app_folder }}"
+  register: app_dir
+
+- name: Move foo to bar
+  command: mv "{{ ui_app_folder }}" "{{ ui_app_folder }}-{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
+  when: app_dir.stat.exists
+
+
+- file:
+    path: "{{ ui_app_folder }}"
+    state: directory
+    mode: 0755
+    owner: ubuntu
+    group: ubuntu
+
+- name: Extrat zip file
+  unarchive:
+    src: "{{ source_zip_file }}"
+    dest: "{{ ui_app_folder }}"
+    owner: ubuntu
+    mode: 0755

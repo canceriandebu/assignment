@@ -1,0 +1,30 @@
+server {
+
+        listen       443;
+        server_name  static.thoughtworks.com;
+        ssl                  on;
+
+        ssl_session_timeout  5m;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+        ssl_certificate     /etc/nginx/ssl/server.crt;
+        ssl_certificate_key /etc/nginx/ssl/server.key;
+
+
+
+        location / {
+            allow 127.0.0.1;
+            alias  /home/ubuntu/static/;
+            index index.html;
+            try_files $uri $uri/ /index.html;
+        }
+
+
+}
+
+server {
+        listen 80;
+        listen [::]:80;
+        server_name static.thoughtworks.com;
+        return 301 https://static.thoughtworks.com$request_uri;
+}

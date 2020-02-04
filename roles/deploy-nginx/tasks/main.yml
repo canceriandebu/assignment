@@ -1,0 +1,55 @@
+---
+
+- name: Nginx latest install
+  apt:
+      name: "{{ item}}"
+      state: latest
+      update_cache: yes
+  with_items:
+    - nginx
+    - zip
+    - openssl
+
+
+- name: Make sure nginx SSL directory present
+  file:
+    path: "/etc/nginx/ssl"
+    state: directory
+    mode: 0755
+
+- name: create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Oregon/L=Portland/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt
+  notify: reload nginx
+
+- name: Ensure that the default site is disabled
+  command: rm /etc/nginx/sites-enabled/default
+           removes=/etc/nginx/sites-enabled/default
+
+
+- name: Create the Nginx configuration file
+  template:
+    src: "static.conf.j2"
+    dest: "/etc/nginx/sites-available/static.conf"
+    force: yes
+
+
+- name: Ensure that the application site is enabled
+  command: ln -s /etc/nginx/sites-available/static.conf
+           /etc/nginx/sites-enabled/static.conf
+           creates=/etc/nginx/sites-enabled/static.conf
+  notify: restart nginx
+
+- name: Create the Nginx configuration file
+  template:
+    src: "tomcat.conf.j2"
+    dest: "/etc/nginx/sites-available/tomcat.conf"
+    force: yes
+
+- name: Ensure that the app site is enabled
+  command: ln -s /etc/nginx/sites-available/tomcat.conf
+           /etc/nginx/sites-enabled/tomcat.conf
+           creates=/etc/nginx/sites-enabled/tomcat.conf
+  notify: restart nginx
+
+- name: Make sure nginx is running
+  service: name=nginx state=restarted

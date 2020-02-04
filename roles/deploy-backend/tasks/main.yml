@@ -1,0 +1,26 @@
+---
+
+- name: Install Requisites
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - tomcat8
+    - tomcat8-docs
+    - tomcat8-admin
+    - default-jdk
+
+- name: Deploy war file
+  copy:
+    src: "{{ warfile }}"
+    dest: "{{ war_deploy_path }}/{{warfile}}"
+    # owner: tomcat
+    # group: tomcat
+  register: war_copied
+
+- name: Restart Tomcat
+  service:
+    name: tomcat8
+    state: restarted
+  when: war_copied.changed
