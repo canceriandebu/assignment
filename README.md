@@ -21,7 +21,7 @@ file name: aws_provisiong_ui.yml
 - group_id:
 - region:
 
-### Run the playbook as "ansible-playbook -i hosts aws_provisiong_ui.yml"
+### Run the playbook as "ansible-playbook -i hosts aws_provisioning_ui.yml"
 
 -------------------------------------------------------------------------------
 
@@ -34,4 +34,4 @@ file name: aws_provisiong_backend.yml
 - group_id:
 - region:
 
-### Run the playbook as "ansible-playbook -i hosts aws_provisiong_backend.yml"
+### Run the playbook as "ansible-playbook -i hosts aws_provisioning_backend.yml"
