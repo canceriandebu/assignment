@@ -43,7 +43,7 @@
     with_items: "{{ ec2.instances }}"
 
 - hosts: uiservers
-  name: Run role for ui
+  name: Run role for UI Servers
   user: ubuntu
   become: yes
   gather_facts: true

@@ -1,6 +1,6 @@
 ---
 
-- name: Nginx latest install
+- name: Install Packages
   apt:
       name: "{{ item}}"
       state: latest
