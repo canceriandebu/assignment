@@ -1,4 +1,4 @@
-# Thoughtworks
+
 -------------------------------------------------------------------------------
 ## Edit the parameter in files before running the playbook
 
